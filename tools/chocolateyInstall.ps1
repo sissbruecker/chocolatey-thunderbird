@@ -1,37 +1,27 @@
-﻿#try { #error handling is only necessary if you need to do anything in addition to/instead of the main helpers
-  # main helpers - these have error handling tucked into them so they become the only line of your script if that is all you need.
-  # installer, will assert administrative rights
-  Install-ChocolateyPackage 'thunderbird' 'exe' '/S' 'https://download.mozilla.org/?product=thunderbird-16.0.1&os=win&lang=en-US' -validExitCodes @(0)
-  # "/s /S /q /Q /quiet /silent /SILENT /VERYSILENT" # try any of these to get the silent installer #msi is always /quiet
-  #Exit codes for ms http://msdn.microsoft.com/en-us/library/aa368542(VS.85).aspx
-  # download and unpack a zip file
-  #Install-ChocolateyZipPackage '__NAME__' 'URL' "$(Split-Path -parent $MyInvocation.MyCommand.Definition)" '64BIT_URL_DELETE_IF_NO_64BIT' 
-  
-  # other helpers - using any of these means you want to uncomment the error handling up top and at bottom.
-  # downloader that the main helpers use to download items
-  #Get-ChocolateyWebFile '__NAME__' 'DOWNLOAD_TO_FILE_FULL_PATH' 'URL' '64BIT_URL_DELETE_IF_NO_64BIT'
-  # installer, will assert administrative rights - used by Install-ChocolateyPackage
-  #Install-ChocolateyInstallPackage '__NAME__' 'EXE_OR_MSI' 'SILENT_ARGS' '_FULLFILEPATH_' -validExitCodes @(0)
-  # unzips a file to the specified location - auto overwrites existing content
-  #Get-ChocolateyUnzip "FULL_LOCATION_TO_ZIP.zip" "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
-  # Runs processes asserting UAC, will assert administrative rights - used by Install-ChocolateyInstallPackage
-  #Start-ChocolateyProcessAsAdmin 'STATEMENTS_TO_RUN' 'Optional_Application_If_Not_PowerShell' -validExitCodes @(0)
-  # add specific folders to the path - any executables found in the chocolatey package folder will already be on the path. This is used in addition to that or for cases when a native installer doesn't add things to the path.
-  #Install-ChocolateyPath 'LOCATION_TO_ADD_TO_PATH' 'User_OR_Machine' # Machine will assert administrative rights
-  # add specific files as shortcuts to the desktop
-  #$target = Join-Path $MyInvocation.MyCommand.Definition '__NAME__.exe'
-  #Install-ChocolateyDesktopLink $target
-  
-  #------- ADDITIONAL SETUP -------#
-  # make sure to uncomment the error handling if you have additional setup to do
+﻿$installerVersion="16.0.1"
+$installerLanguage="en-US"
+$baseUrl = "https://download.mozilla.org/?product=thunderbird-{0}&os=win&lang={1}"
 
-  #$processor = Get-WmiObject Win32_Processor
-  #$is64bit = $processor.AddressWidth -eq 64
+# Split optional installer arguments into hashtable
+$argumentMap = ConvertFrom-StringData $installArguments
 
-  
-  # the following is all part of error handling
-  #Write-ChocolateySuccess '__NAME__'
-#} catch {
-  #Write-ChocolateyFailure '__NAME__' "$($_.Exception.Message)"
-  #throw 
-#}
+foreach($key in $argumentMap.keys){
+    
+	# Check for language parameter
+	if("l", "lang", "language" -contains $key) {
+		$installerLanguage = $argumentMap.item($key)
+		Write-Host "Found language override: $installerLanguage" -BackgroundColor Blue -ForegroundColor White
+	}
+	
+	# Check for version parameter
+	if("v", "version" -contains $key) {
+		$installerVersion = $argumentMap.item($key)
+		Write-Host "Found version override: $installerVersion" -BackgroundColor Blue -ForegroundColor White
+	}
+}
+
+$installerUrl = [string]::Format($baseUrl, $installerVersion, $installerLanguage)
+
+Write-Host "Downloading from: $installerUrl" -BackgroundColor Blue -ForegroundColor White
+
+Install-ChocolateyPackage 'thunderbird' 'exe' '/S' $installerUrl -validExitCodes @(0)

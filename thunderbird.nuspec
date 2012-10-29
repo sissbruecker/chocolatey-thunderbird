@@ -3,11 +3,26 @@
   <metadata>
     <id>thunderbird</id>
     <title>Mozilla Thunderbird</title>
-    <version>16.0.1.1</version>
+    <version>16.0.1.2</version>
     <authors>Mozilla</authors>
     <owners>sissbruecker</owners>
     <summary>A free email client from Mozilla</summary>
-    <description>Thunderbird is a free email application that's easy to set up and customize - and it's loaded with great features!</description>
+    <description>Thunderbird is a free email application that's easy to set up and customize - and it's loaded with great features!
+	
+	=========== Languages ===========
+	
+	By default the package will install Thunderbird with english (en-US) language settings. However you can override those by using the -installArgs parameter:
+	
+	cinst thunderbird -installArgs ""l={0}""
+	
+	where you replace the {0} with your preferred locale string. For example to install with Thunderbird with german locale you make the following call:
+
+	cinst thunderbird -installArgs ""l=de""
+	
+	Make sure to use the double quotes, otherwise the script will run into an error!
+	
+	To get a list of all available locales have a look at this folder: http://releases.mozilla.org/pub/mozilla.org/thunderbird/releases/latest/win32/xpi/.
+	</description>
     <projectUrl>https://www.mozilla.org/en/thunderbird/</projectUrl>
     <tags>mozilla thunderbird email</tags>
     <copyright>Copyright © 2005–2012 Mozilla. All rights reserved.</copyright>
