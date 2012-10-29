@@ -3,7 +3,7 @@
   <metadata>
     <id>thunderbird</id>
     <title>Mozilla Thunderbird</title>
-    <version>16.0.1</version>
+    <version>16.0.1.1</version>
     <authors>Mozilla</authors>
     <owners>sissbruecker</owners>
     <summary>A free email client from Mozilla</summary>
@@ -13,7 +13,7 @@
     <copyright>Copyright © 2005–2012 Mozilla. All rights reserved.</copyright>
     <licenseUrl>http://www.mozilla.org/en-US/legal/eula/thunderbird.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <!--<iconUrl>https://github.com/__CHOCO_PKG_OWNER_REPO__/raw/master/__NAME__/__NAME__.gif</iconUrl>-->
+    <iconUrl>https://raw.github.com/sissbruecker/chocolatey-thunderbird/master/mozilla-thunderbird.png</iconUrl>
     <!--<dependencies>
       <dependency id="" version="" />
     </dependencies>-->
