@@ -1,41 +1,21 @@
 <?xml version="1.0"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>thunderbird</id>
+    <version>17.0.5</version>
     <title>Mozilla Thunderbird</title>
-    <version>16.0.1.2</version>
     <authors>Mozilla</authors>
     <owners>sissbruecker</owners>
-    <summary>A free email client from Mozilla</summary>
-    <description>Thunderbird is a free email application that's easy to set up and customize - and it's loaded with great features!
-	
-	=========== Languages ===========
-	
-	By default the package will install Thunderbird with english (en-US) language settings. However you can override those by using the -installArgs parameter:
-	
-	cinst thunderbird -installArgs ""l={0}""
-	
-	where you replace the {0} with your preferred locale string. For example to install with Thunderbird with german locale you make the following call:
-
-	cinst thunderbird -installArgs ""l=de""
-	
-	Make sure to use the double quotes, otherwise the script will run into an error!
-	
-	To get a list of all available locales have a look at this folder: http://releases.mozilla.org/pub/mozilla.org/thunderbird/releases/latest/win32/xpi/.
-	</description>
-    <projectUrl>https://www.mozilla.org/en/thunderbird/</projectUrl>
-    <tags>mozilla thunderbird email</tags>
-    <copyright>Copyright © 2005–2012 Mozilla. All rights reserved.</copyright>
     <licenseUrl>http://www.mozilla.org/en-US/legal/eula/thunderbird.html</licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://www.mozilla.org/en/thunderbird/</projectUrl>
     <iconUrl>https://raw.github.com/sissbruecker/chocolatey-thunderbird/master/mozilla-thunderbird.png</iconUrl>
-    <!--<dependencies>
-      <dependency id="" version="" />
-    </dependencies>-->
-    <releaseNotes></releaseNotes>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Thunderbird is a free email application that's easy to set up and customize â€“ and itâ€™s loaded with great features!
+	
+	This package automatically chooses the system language as language for Thunderbird</description>
+    <summary>A free email client from Mozilla</summary>
+    <releaseNotes />
+    <copyright>2005â€“2012 Mozilla. All rights reserved.</copyright>
+    <tags>mozilla thunderbird email</tags>
   </metadata>
-  <files>
-    <file src="tools\**" target="tools" />
-    <!--<file src="content\**" target="content" />-->
-  </files>
 </package>
