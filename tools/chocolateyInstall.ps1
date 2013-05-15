@@ -1,27 +1,34 @@
-﻿$installerVersion="16.0.1"
-$installerLanguage="en-US"
-$baseUrl = "https://download.mozilla.org/?product=thunderbird-{0}&os=win&lang={1}"
+$packageName = 'thunderbird'
+$fileType = 'exe'
+$version = '17.0.5'
+$silentArgs = '-ms'
+$language = (Get-Culture).Name # Get language and country code separated by hyphen
+$url = "http://download.mozilla.org/?product=$packageName-$version&os=win&lang=$language"
 
-# Split optional installer arguments into hashtable
-$argumentMap = ConvertFrom-StringData $installArguments
+$req = [system.Net.WebRequest]::Create($url)
+try {
+$res = $req.GetResponse()
+} catch [System.Net.WebException] {
+$res = $_.Exception.Response
+}
+$statusCode = $res.StatusCode
 
-foreach($key in $argumentMap.keys){
-    
-	# Check for language parameter
-	if("l", "lang", "language" -contains $key) {
-		$installerLanguage = $argumentMap.item($key)
-		Write-Host "Found language override: $installerLanguage" -BackgroundColor Blue -ForegroundColor White
-	}
-	
-	# Check for version parameter
-	if("v", "version" -contains $key) {
-		$installerVersion = $argumentMap.item($key)
-		Write-Host "Found version override: $installerVersion" -BackgroundColor Blue -ForegroundColor White
-	}
+if ($statusCode -eq "NotFound") {
+    $language = "$language" -replace '-[a-z]{2}', ''
+    $url = "http://download.mozilla.org/?product=$packageName-$version&os=win&lang=$language"
+
+    $req = [system.Net.WebRequest]::Create($url)
+    try {
+    $res = $req.GetResponse()
+    } catch [System.Net.WebException] {
+    $res = $_.Exception.Response
+    }
+    $statusCode = $res.StatusCode
+
+    if ($statusCode -eq "NotFound") {
+            $language = "en-US"
+            $url = "http://download.mozilla.org/?product=$packageName-$version&os=win&lang=$language"
+        }
 }
 
-$installerUrl = [string]::Format($baseUrl, $installerVersion, $installerLanguage)
-
-Write-Host "Downloading from: $installerUrl" -BackgroundColor Blue -ForegroundColor White
-
-Install-ChocolateyPackage 'thunderbird' 'exe' '/S' $installerUrl -validExitCodes @(0)
+Install-ChocolateyPackage $packageName $fileType $silentArgs $url
